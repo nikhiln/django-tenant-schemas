@@ -57,13 +57,13 @@ class Command(SyncCommon):
             self._notice("=== Running migrate for schema %s" % schema_name)
 
         if not schema_exists(schema_name):
-            raise MigrationSchemaMissing('Schema "{}" does not exist'.format(
-                schema_name))
-
-        connection.set_schema(schema_name)
-        command = MigrateCommand()
-        command.execute(*self.args, **self.options)
-        connection.set_schema_to_public()
+            # raise MigrationSchemaMissing('Schema "{}" does not exist'.format(schema_name))
+            self._notice("Couldn't find schema %s. Ignoring it for migration" % schema_name)
+        else:
+            connection.set_schema(schema_name)
+            command = MigrateCommand()
+            command.execute(*self.args, **self.options)
+            connection.set_schema_to_public()
 
     def _notice(self, output):
         self.stdout.write(self.style.NOTICE(output))
