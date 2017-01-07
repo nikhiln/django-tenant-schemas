@@ -96,3 +96,4 @@ class TenantMixin(models.Model):
                          verbosity=verbosity)
 
         connection.set_schema_to_public()
+        return True
